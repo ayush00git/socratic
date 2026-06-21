@@ -101,6 +101,7 @@ chmod +x "$STAGE_DIR/bin/$BINARY_NAME"
 # Write the manifest.json Anna Agent reads to locate the entrypoint
 cat > "$STAGE_DIR/manifest.json" <<EOF
 {
+  "slug": "socratic-engine",
   "name": "$TOOL_ID",
   "version": "$VERSION",
   "platform": "$PLATFORM",
