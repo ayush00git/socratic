@@ -1,0 +1,57 @@
+name: Release Binaries
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to upload assets to (e.g. v1.0.0)"
+        required: true
+
+jobs:
+  build:
+    name: Build ${{ matrix.platform }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux-x86_64
+            runner: ubuntu-latest
+          - platform: darwin-arm64
+            runner: macos-latest
+          - platform: darwin-x86_64
+            runner: macos-13        # Intel runner
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install ncc and pkg
+        run: npm install -g @vercel/ncc pkg
+
+      - name: Build binary
+        working-directory: executas/socratic-engine
+        env:
+          PLATFORM: ${{ matrix.platform }}
+        run: |
+          chmod +x package_binary.sh
+          ./package_binary.sh
+
+      - name: List output
+        working-directory: executas/socratic-engine
+        run: ls -lh dist-anna/
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name || inputs.tag }}
+          files: executas/socratic-engine/dist-anna/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

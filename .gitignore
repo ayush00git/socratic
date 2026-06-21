@@ -1,2 +1,6 @@
 node_modules/
 bundle/node_modules/
+
+# Binary build artifacts
+executas/socratic-engine/dist-anna/
+executas/socratic-engine/.build-tmp/
