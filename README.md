@@ -70,6 +70,14 @@ Anna handles the platform layer: app runtime, tool calling, permissions, and hum
 npm i
 ```
 
+### Login to Anna (first time only)
+
+```bash
+npm run login
+```
+
+This authenticates your local CLI against the Anna platform at `https://anna.partners`. You must be logged in before running the dev server.
+
 ### Run locally
 
 ```bash
@@ -77,14 +85,6 @@ npm run dev
 ```
 
 This starts the Anna dev server. Open the URL shown in your terminal to interact with Socratic locally.
-
-### Login to Anna (first time only)
-
-```bash
-npm run login
-```
-
-This authenticates your local CLI against the Anna platform at `https://anna.partners`.
 
 ### Verify your setup
 
@@ -101,11 +101,18 @@ npm run validate # validates your Anna App config strictly
 ```
 socratic/
 ├── package.json          # Project config and Anna CLI scripts
+├── manifest.json         # Anna App manifest (permissions, UI, executas)
 ├── README.md             # You are here
-└── app/                  # Anna App source
-    ├── index.html        # Main UI entry point
-    ├── app.json          # Anna App manifest
-    └── tools/            # Anna tool definitions
+├── bundle/               # Frontend UI (static SPA)
+│   ├── index.html        # Main UI entry point
+│   ├── app.js            # App logic
+│   └── style.css         # Styles
+├── executas/             # Anna tool (executa) definitions
+│   └── socratic-engine/  # Core questioning & assumption-surfacing tool
+├── skills/               # Anna skill definitions
+│   └── SKILL.md          # Socratic coach skill
+└── fixtures/             # Dev fixtures for local testing
+    └── happy-path.jsonl  # Example session fixture
 ```
 
 ---
