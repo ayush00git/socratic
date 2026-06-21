@@ -33,8 +33,8 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Install ncc and pkg
-        run: npm install -g @vercel/ncc pkg
+      - name: Install pkg
+        run: npm install -g pkg
 
       - name: Build binary
         working-directory: executas/socratic-engine

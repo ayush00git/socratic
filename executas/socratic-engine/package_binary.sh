@@ -10,8 +10,11 @@
 # Requirements:
 #   - Node.js >= 18
 #   - npm
-#   - @vercel/ncc  (installed globally or locally; script installs if missing)
-#   - pkg          (installed globally or locally; script installs if missing)
+#   - pkg (installed globally or locally; script installs if missing)
+#
+# Note: ncc is NOT used here because socratic-engine has zero external npm
+# dependencies (only Node built-ins + local sdk/sampling.js). pkg handles
+# local requires natively, so bundling with ncc first is unnecessary.
 
 set -euo pipefail
 
@@ -67,37 +70,27 @@ echo "  Output  : $OUT_DIR/$ARCHIVE_NAME"
 echo "========================================"
 echo
 
-# ── Ensure ncc and pkg are available ─────────────────────────────────────────
-ensure_tool() {
-  local cmd="$1"
-  local pkg_name="$2"
-  if ! command -v "$cmd" &>/dev/null; then
-    echo "Installing $pkg_name globally..."
-    npm install -g "$pkg_name"
-  fi
-}
+# ── Ensure pkg is available ───────────────────────────────────────────────────
+if ! command -v pkg &>/dev/null; then
+  echo "Installing pkg globally..."
+  npm install -g pkg
+fi
 
-ensure_tool ncc  "@vercel/ncc"
-ensure_tool pkg  "pkg"
-
-# ── Step 1: Bundle all JS into a single file with ncc ────────────────────────
-echo "[1/4] Bundling with ncc..."
+# ── Step 1: Compile directly with pkg ────────────────────────────────────────
+# pkg handles local requires (sdk/sampling.js) natively — no bundler needed.
+echo "[1/3] Compiling binary with pkg (target: $PKG_TARGET)..."
 rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR"
-ncc build "$ENTRY" -o "$BUILD_DIR/ncc-out" --quiet
-echo "      → $BUILD_DIR/ncc-out/index.js"
 
-# ── Step 2: Compile bundled file into a native binary with pkg ────────────────
-echo "[2/4] Compiling binary with pkg (target: $PKG_TARGET)..."
 BINARY_NAME="$TOOL_ID"
-pkg "$BUILD_DIR/ncc-out/index.js" \
+pkg "$ENTRY" \
   --target "$PKG_TARGET" \
   --output "$BUILD_DIR/$BINARY_NAME" \
   --compress GZip
 echo "      → $BUILD_DIR/$BINARY_NAME"
 
-# ── Step 3: Assemble the archive directory ────────────────────────────────────
-echo "[3/4] Assembling archive structure..."
+# ── Step 2: Assemble the archive directory ────────────────────────────────────
+echo "[2/3] Assembling archive structure..."
 STAGE_DIR="$BUILD_DIR/stage"
 rm -rf "$STAGE_DIR"
 mkdir -p "$STAGE_DIR/bin"
@@ -108,16 +101,24 @@ chmod +x "$STAGE_DIR/bin/$BINARY_NAME"
 # Write the manifest.json Anna Agent reads to locate the entrypoint
 cat > "$STAGE_DIR/manifest.json" <<EOF
 {
-  "tool_id": "$TOOL_ID",
+  "name": "$TOOL_ID",
   "version": "$VERSION",
   "platform": "$PLATFORM",
-  "entrypoint": "bin/$BINARY_NAME",
-  "executables": ["bin/$BINARY_NAME"]
+  "runtime": {
+    "binary": {
+      "entrypoint": {
+        "default": "bin/$BINARY_NAME"
+      },
+      "permissions": {
+        "bin/$BINARY_NAME": "0o755"
+      }
+    }
+  }
 }
 EOF
 
-# ── Step 4: Create the .tar.gz ────────────────────────────────────────────────
-echo "[4/4] Creating archive..."
+# ── Step 3: Create the .tar.gz ────────────────────────────────────────────────
+echo "[3/3] Creating archive..."
 mkdir -p "$OUT_DIR"
 tar -czf "$OUT_DIR/$ARCHIVE_NAME" -C "$STAGE_DIR" .
 
@@ -127,7 +128,10 @@ rm -rf "$BUILD_DIR"
 echo
 echo "✓ Done: $OUT_DIR/$ARCHIVE_NAME"
 echo
+echo "Archive contents:"
+tar -tzf "$OUT_DIR/$ARCHIVE_NAME"
+echo
 echo "Next steps:"
 echo "  1. Upload $OUT_DIR/$ARCHIVE_NAME to a GitHub Release asset"
-echo "  2. On anna.partners → App → More → Advanced → Executa → set binary_url"
+echo "  2. On anna.partners → App → More → Advanced → Executa → Distribution Type: Binary"
 echo "     entrypoint: bin/$TOOL_ID"
