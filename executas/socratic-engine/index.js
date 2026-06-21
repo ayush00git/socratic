@@ -298,7 +298,7 @@ async function toolProcessAnswer({ session_id, answer }, invokeId) {
   return {
     assumption,
     question_index: currentIndex,
-    total_questions: TOTAL_QUESTIONS,
+    total_questions: session.total_questions,
   };
 }
 
