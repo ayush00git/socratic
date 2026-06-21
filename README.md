@@ -57,6 +57,56 @@ Anna handles the platform layer: app runtime, tool calling, permissions, and hum
 
 ---
 
+## How It Works
+
+### Step 1 — Describe your problem
+
+Type in the decision or situation you're stuck on, or pick one of the example chips. Choose your session depth: **Quick (3 rounds)**, **Deep (5 rounds)**, or **Thorough (7 rounds)**.
+
+![Step 1 — Problem input screen](public/image1.png)
+
+---
+
+### Step 2 — AI generates your first question
+
+Hit **Start thinking** and the AI goes to work. It reads your problem and crafts the sharpest probing question it can — not a generic one, something specific to what you wrote.
+
+![Step 2 — Thinking loading state](public/image2.png)
+
+---
+
+### Step 3 — Answer the question
+
+The question appears with a round counter. Write your answer freely — the more honest and detailed, the better the assumptions the AI will surface.
+
+![Step 3 — Socratic question with answer input](public/image3.png)
+
+---
+
+### Step 4 — Review the hidden assumption
+
+After you submit, the AI extracts the single most important hidden assumption buried in your answer. You then decide: is it **Valid**, **False**, or **Unsure**? This judgment is yours — the AI cannot make it for you.
+
+![Step 4 — Hidden assumption card with validation buttons](public/image4.png)
+
+---
+
+### Step 5 — Complete all rounds
+
+Steps 3–4 repeat for each round. Once all rounds are done, you're shown a completion screen and invited to generate your Clarity Map.
+
+![Step 5 — Session complete screen](public/image5.png)
+
+---
+
+### Step 6 — Get your Clarity Map
+
+The AI produces a structured summary split into two sections: **What you know** (explicit facts from your answers) and **What you've assumed** (each assumption colour-coded by your validation). Copy it to your notes or clipboard.
+
+![Step 6 — Clarity Map output](public/image6.png)
+
+---
+
 ## Getting Started
 
 ### Prerequisites
