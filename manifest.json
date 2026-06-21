@@ -1,0 +1,63 @@
+{
+  "schema": 2,
+  "permissions": [
+    "tools.invoke",
+    "storage.read",
+    "storage.write",
+    "llm.complete"
+  ],
+  "required_executas": [
+    {
+      "tool_id": "tool-ayush2007iit_7177-socratic-engine-yg859pn2",
+      "min_version": "1.0.0",
+      "version": "latest"
+    },
+    {
+      "tool_id": "skill-ayush2007iit_7177-socratic-coach-984hgz2s",
+      "version": "latest"
+    }
+  ],
+  "optional_executas": [],
+  "system_prompt_addendum": "The user has the Socratic thinking partner app open. They are working through a problem or decision using structured Socratic questioning. The socratic-coach skill defines how you should behave. Do not give advice — help them think. Do not trigger tool calls from chat; those are UI-driven.",
+  "tags": ["thinking", "decisions", "productivity", "coaching"],
+  "ui": {
+    "bundle": {
+      "format": "static-spa",
+      "entry": "index.html",
+      "external_origins": []
+    },
+    "views": [
+      {
+        "name": "main",
+        "title": "Socratic",
+        "default": true,
+        "entry": "index.html",
+        "min_size":     { "w": 400, "h": 560 },
+        "default_size": { "w": 520, "h": 700 },
+        "max_size":     { "w": 760, "h": 960 },
+        "resizable": true,
+        "movable": true,
+        "single_instance": true
+      }
+    ],
+    "host_api": {
+      "tools":   ["required:tool-ayush2007iit_7177-socratic-engine-yg859pn2"],
+      "chat":    [],
+      "llm":     ["complete"],
+      "storage": ["get", "set"],
+      "window":  ["set_title"]
+    },
+    "csp_overrides": {
+      "img-src":        ["'self'", "data:"],
+      "font-src":       ["'self'", "data:"],
+      "style-src":      ["'self'"],
+      "script-src":     ["'self'"]
+    },
+    "state_merge": "last_writer_wins"
+  },
+  "dev": {
+    "fixtures": ["fixtures/*.jsonl"],
+    "seed_storage": {},
+    "user_id": 1
+  }
+}

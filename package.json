@@ -1,0 +1,16 @@
+{
+  "name": "socratic",
+  "version": "1.0.0",
+  "description": "Socratic — AI thinking partner Anna App",
+  "private": true,
+  "scripts": {
+    "dev": "anna-app dev",
+    "validate": "anna-app validate --strict",
+    "doctor": "anna-app doctor",
+    "login": "anna-app login --host https://anna.partners",
+    "whoami": "anna-app whoami"
+  },
+  "devDependencies": {
+    "@anna-ai/cli": "^0.1.27"
+  }
+}

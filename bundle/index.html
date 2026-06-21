@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Socratic</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-screen="loading">
+
+  <!-- Loading -->
+  <div class="screen" id="screen-loading">
+    <div class="loader-ring"></div>
+  </div>
+
+  <!-- Problem input -->
+  <div class="screen" id="screen-problem">
+    <div class="card card--entry">
+      <div class="brand">
+        <span class="brand__icon">◈</span>
+        <span class="brand__name">Socratic</span>
+      </div>
+      <p class="tagline">Every AI tool answers.<br>This one helps you ask.</p>
+      <div class="field">
+        <label class="field__label" for="problem-input">What are you trying to figure out?</label>
+        <textarea
+          id="problem-input"
+          class="field__textarea"
+          rows="4"
+          maxlength="500"
+          placeholder="e.g. Should I quit my job to freelance? Should I launch this product? Should I move cities?"
+          autocomplete="off"
+          spellcheck="false"
+        ></textarea>
+        <div class="example-chips">
+          <button class="chip" data-example="Should I quit my job to freelance?">Quit job to freelance?</button>
+          <button class="chip" data-example="Should I launch this product now?">Launch this product?</button>
+          <button class="chip" data-example="Should I move to a new city?">Move cities?</button>
+        </div>
+      </div>
+      <div class="round-selector">
+        <span class="round-selector__label">Depth</span>
+        <div class="round-selector__options">
+          <button class="round-opt" data-rounds="3">Quick · 3</button>
+          <button class="round-opt round-opt--active" data-rounds="5">Deep · 5</button>
+          <button class="round-opt" data-rounds="7">Thorough · 7</button>
+        </div>
+      </div>
+      <button class="btn btn--primary btn--full" id="start-btn" disabled>
+        Start thinking →
+      </button>
+      <button class="btn btn--ghost btn--full btn--sm" id="history-btn">
+        Recent sessions
+      </button>
+    </div>
+  </div>
+
+  <!-- Questioning -->
+  <div class="screen" id="screen-questioning">
+    <div class="progress-bar">
+      <div class="progress-bar__fill" id="progress-fill"></div>
+    </div>
+    <div class="card card--question">
+      <div class="round-badge" id="round-badge">Round 1 of 5</div>
+      <p class="question-text" id="question-text"></p>
+      <div class="field">
+        <textarea
+          id="answer-input"
+          class="field__textarea"
+          rows="3"
+          maxlength="1000"
+          placeholder="Answer honestly — there are no wrong answers."
+          autocomplete="off"
+          spellcheck="false"
+        ></textarea>
+      </div>
+      <button class="btn btn--primary btn--full" id="answer-btn" disabled>
+        Continue →
+      </button>
+    </div>
+  </div>
+
+  <!-- Assumption review (THE human review step) -->
+  <div class="screen" id="screen-assumption">
+    <div class="progress-bar">
+      <div class="progress-bar__fill" id="progress-fill-2"></div>
+    </div>
+    <div class="card card--assumption">
+      <div class="assumption-header">
+        <span class="assumption-tag">Hidden assumption found</span>
+      </div>
+      <p class="assumption-text" id="assumption-text"></p>
+      <p class="assumption-prompt">Is this assumption actually true?</p>
+      <div class="validation-buttons">
+        <button class="btn btn--valid"   data-v="valid">   ✓ Valid   </button>
+        <button class="btn btn--false"   data-v="false">   ✗ False   </button>
+        <button class="btn btn--unknown" data-v="unknown"> ? Unsure  </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Complete (pre-map) -->
+  <div class="screen" id="screen-complete">
+    <div class="card card--complete">
+      <div class="complete-icon">◈</div>
+      <h2 class="complete-title">You've examined the problem.</h2>
+      <p class="complete-sub" id="complete-sub">5 rounds done. Ready to see what you know vs what you've assumed?</p>
+      <button class="btn btn--primary btn--full" id="map-btn">
+        Generate clarity map →
+      </button>
+    </div>
+  </div>
+
+  <!-- Clarity map -->
+  <div class="screen" id="screen-map">
+    <div class="map-header">
+      <button class="btn btn--ghost btn--sm" id="new-session-btn">← New session</button>
+      <span class="map-title">Clarity Map</span>
+      <div class="map-header__actions">
+        <button class="btn btn--ghost btn--sm" id="copy-summary-btn">Copy summary</button>
+        <button class="btn btn--ghost btn--sm" id="copy-map-btn">Copy map</button>
+      </div>
+    </div>
+    <div class="map-body">
+      <div class="map-col">
+        <h3 class="map-col__head">What you know</h3>
+        <ul class="map-list" id="knowns-list"></ul>
+      </div>
+      <div class="map-col">
+        <h3 class="map-col__head">What you've assumed</h3>
+        <ul class="map-list" id="assumptions-list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Past sessions -->
+  <div class="screen" id="screen-sessions">
+    <div class="sessions-header">
+      <button class="btn btn--ghost btn--sm" id="sessions-back-btn">← Back</button>
+      <span class="sessions-title">Recent Sessions</span>
+    </div>
+    <div class="sessions-body">
+      <div id="sessions-loading" hidden>
+        <div class="loader-ring loader-ring--sm"></div>
+      </div>
+      <p class="sessions-empty" id="sessions-empty" hidden>
+        No sessions yet. Start your first one.
+      </p>
+      <ul class="sessions-list" id="sessions-list"></ul>
+    </div>
+  </div>
+
+  <!-- Error toast -->
+  <div class="error-toast" id="error-toast" hidden>
+    <span class="error-toast__msg" id="error-msg"></span>
+    <button class="error-toast__retry" id="error-retry-btn">Retry</button>
+    <button class="error-toast__close" id="error-close-btn" aria-label="Dismiss">✕</button>
+  </div>
+
+  <!-- Global loading overlay -->
+  <div class="thinking-overlay" id="thinking-overlay" hidden>
+    <div class="loader-ring loader-ring--sm"></div>
+    <span>Thinking...</span>
+  </div>
+
+  <script src="anna-tool-ids.js" defer></script>
+  <script src="app.js" type="module"></script>
+</body>
+</html>
