@@ -1,0 +1,9 @@
+{
+  "slug": "socratic",
+  "name": "Socratic",
+  "version": "1.0.0",
+  "tagline": "Every AI tool answers. This one helps you ask better questions.",
+  "description": "Socratic is a structured thinking workflow app that replaces the reflex of asking AI for an answer with something more valuable: guided Socratic questioning that surfaces hidden assumptions, challenges your framing, and produces a Clarity Map of what you know, what you've assumed, and what remains uncertain.",
+  "category": "productivity",
+  "pricing_model": "free"
+}
