@@ -1,0 +1,18 @@
+# Dependencies — never upload
+node_modules/
+bundle/node_modules/
+
+# Vite source/config (bundle is already compiled vanilla JS)
+bundle/package.json
+bundle/package-lock.json
+
+# Binary build artifacts
+executas/socratic-engine/dist-anna/
+executas/socratic-engine/.build-tmp/
+
+# Dev/tooling files
+.git/
+.github/
+.anna/
+fixtures/
+public/
