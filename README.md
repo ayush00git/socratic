@@ -66,8 +66,12 @@ Anna handles the platform layer: app runtime, tool calling, permissions, and hum
 
 ### Installation
 
+Install dependencies for both the root (Anna CLI) and the UI bundle (React + Vite):
+
 ```bash
-npm i
+npm i              # installs Anna CLI at root
+cd bundle && npm i # installs React, Vite, and UI deps
+cd ..
 ```
 
 ### Login to Anna (first time only)
