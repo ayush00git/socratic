@@ -1,0 +1,8 @@
+{
+  "$schema": "anna-app-identity/v1",
+  "host": "https://anna.partners",
+  "app_id": 1,
+  "slug": "socratic",
+  "handle": "ayush00git",
+  "first_published_at": "2026-06-21T16:33:19.946Z"
+}
