@@ -90,15 +90,18 @@ pkg "$ENTRY" \
 echo "      → $BUILD_DIR/$BINARY_NAME"
 
 # ── Step 2: Assemble the archive directory ────────────────────────────────────
+# NOTE: The Anna Agent installs binaries into its own bin/ directory, so the
+# archive must NOT contain a bin/ subfolder. Place the binary at the root.
 echo "[2/3] Assembling archive structure..."
 STAGE_DIR="$BUILD_DIR/stage"
 rm -rf "$STAGE_DIR"
-mkdir -p "$STAGE_DIR/bin"
+mkdir -p "$STAGE_DIR"
 
-cp "$BUILD_DIR/$BINARY_NAME" "$STAGE_DIR/bin/$BINARY_NAME"
-chmod +x "$STAGE_DIR/bin/$BINARY_NAME"
+cp "$BUILD_DIR/$BINARY_NAME" "$STAGE_DIR/$BINARY_NAME"
+chmod +x "$STAGE_DIR/$BINARY_NAME"
 
-# Write the manifest.json Anna Agent reads to locate the entrypoint
+# Write the manifest.json Anna Agent reads to locate the entrypoint.
+# entrypoint uses just the filename — no bin/ prefix.
 cat > "$STAGE_DIR/manifest.json" <<EOF
 {
   "slug": "socratic-engine",
@@ -108,10 +111,10 @@ cat > "$STAGE_DIR/manifest.json" <<EOF
   "runtime": {
     "binary": {
       "entrypoint": {
-        "default": "bin/$BINARY_NAME"
+        "default": "$BINARY_NAME"
       },
       "permissions": {
-        "bin/$BINARY_NAME": "0o755"
+        "$BINARY_NAME": "0o755"
       }
     }
   }
@@ -134,5 +137,5 @@ tar -tzf "$OUT_DIR/$ARCHIVE_NAME"
 echo
 echo "Next steps:"
 echo "  1. Upload $OUT_DIR/$ARCHIVE_NAME to a GitHub Release asset"
-echo "  2. On anna.partners → App → More → Advanced → Executa → Distribution Type: Binary"
-echo "     entrypoint: bin/$TOOL_ID"
+echo "  2. On anna.partners → Tool → Distribution → Binary"
+echo "     Executable Name (entrypoint): $TOOL_ID   (no bin/ prefix)"
