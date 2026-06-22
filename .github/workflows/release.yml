@@ -24,8 +24,6 @@ jobs:
             runner: ubuntu-latest
           - platform: darwin-arm64
             runner: macos-latest
-          - platform: darwin-x86_64
-            runner: macos-13        # Intel runner
 
     steps:
       - name: Checkout

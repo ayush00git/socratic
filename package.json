@@ -11,6 +11,6 @@
     "whoami": "anna-app whoami"
   },
   "devDependencies": {
-    "@anna-ai/cli": "^0.1.27"
+    "@anna-ai/cli": "^0.1.30"
   }
 }
