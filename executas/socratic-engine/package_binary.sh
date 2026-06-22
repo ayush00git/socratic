@@ -21,7 +21,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 # ── Config ────────────────────────────────────────────────────────────────────
-TOOL_ID="tool-ayush2007iit_7177-socratic-engine-yg859pn2"
+TOOL_ID="tool-ayush00git-socratic-enginev2-mnjzfxs7"
 VERSION="1.0.0"
 ENTRY="index.js"
 OUT_DIR="dist-anna"

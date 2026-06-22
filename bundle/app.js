@@ -15,7 +15,7 @@ import { AnnaAppRuntime } from "/static/anna-apps/_sdk/latest/index.js";
 // ── Tool ID resolution ────────────────────────────────────────────────────────
 const TOOL_ID =
   (typeof window !== "undefined" && window.__ANNA_TOOL_IDS__?.["socratic-engine"])
-  || "tool-ayush2007iit_7177-socratic-engine-yg859pn2";
+  || "tool-ayush00git-socratic-enginev2-mnjzfxs7";
 
 // ── State ─────────────────────────────────────────────────────────────────────
 let anna = null;

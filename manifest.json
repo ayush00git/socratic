@@ -8,7 +8,7 @@
   ],
   "required_executas": [
     {
-      "tool_id": "tool-ayush2007iit_7177-socratic-engine-yg859pn2",
+      "tool_id": "tool-ayush00git-socratic-enginev2-mnjzfxs7",
       "min_version": "1.0.0",
       "version": "latest"
     },
@@ -41,7 +41,7 @@
       }
     ],
     "host_api": {
-      "tools":   ["required:tool-ayush2007iit_7177-socratic-engine-yg859pn2"],
+      "tools":   ["required:tool-ayush00git-socratic-enginev2-mnjzfxs7"],
       "chat":    [],
       "llm":     ["complete"],
       "storage": ["get", "set"],

@@ -14,7 +14,7 @@ metadata:
     role: skill
     requires:
       tools:
-        - tool-ayush2007iit_7177-socratic-engine-yg859pn2
+        - tool-ayush00git-socratic-enginev2-mnjzfxs7
 ---
 
 # Socratic Coach
